@@ -1,40 +1,16 @@
 <script setup>
+import { reactive, ref, useTemplateRef, watch } from "vue";
 import dayjs from "dayjs";
 import { message } from "ant-design-vue";
-import { reactive, ref, useTemplateRef, watch } from "vue";
+import { InfoCircleTwoTone, LikeTwoTone } from '@ant-design/icons-vue';
 import LightSun from "../components/LightSun.vue";
 import DarkMoon from "../components/DarkMoon.vue";
 import { app, download } from "../store";
 import { getProductsReleasesByCode, getProductsReleasesByCodeAndType, postTranslateText } from "../services";
-import { InfoCircleTwoTone, LikeTwoTone } from '@ant-design/icons-vue';
+import products from '../assets/products.json';
 
 download.init();
 
-const products = {
-  'AC': 'AppCode',
-  'QA': 'Aqua',
-  'CL': 'CLion',
-  'DG': 'DataGrip',
-  'DS': 'DataSpell',
-  'DC': 'DotCover',
-  'DM': 'DotMemory',
-  'DP': 'DotTrace',
-  'GO': 'GoLand',
-  'IIU': 'IntelliJ IDEA Ultimate',
-  'IIC': 'IntelliJ IDEA Community',
-  'PS': 'PhpStorm',
-  'PCP': 'PyCharm Professional',
-  'PCC': 'PyCharm Community',
-  'RS': 'ReSharper',
-  'RC': 'ReSharper C++',
-  'RSU': 'ReSharper Ultimate',
-  'RD': 'Rider',
-  'RM': 'RubyMine',
-  'RR': 'RustRover',
-  'WS': 'WebStorm',
-  'FL': 'Fleet',
-  'TBA': 'Toolbox App',
-};
 const productOptions = Object.entries(products).map(it => { return { value: it[0], label: it[1] } });
 const productSelected = ref([]);
 const latestColumns = [
@@ -52,6 +28,8 @@ if (app.isDesktopApp) {
   window.electron.readFile('setting.json').then(content => productSelected.value = content);
 } else {
   console.warn('浏览器模式不存在 electron 对象。');
+  productSelected.value = ['DG', 'IIU', 'PCP', 'WS', 'FL'];
+  setProductsReleases(productSelected.value);
 }
 
 function saveSetting() {

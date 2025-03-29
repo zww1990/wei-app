@@ -5,9 +5,9 @@
 </template>
 
 <script setup>
+import zhCN from "ant-design-vue/es/locale/zh_CN";
 import Home from "./views/Home.vue";
 import { app } from "./store";
-import zhCN from "ant-design-vue/es/locale/zh_CN";
 
 app.initBackgroundColor();
 </script>

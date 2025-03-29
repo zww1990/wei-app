@@ -182,8 +182,8 @@ ipcMain.handle('read-file', async (event, fileName) => {
     const data = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(data);
   } catch (error) {
-    console.error('Error reading file:', error);
-    return [];
+    console.error('Error reading file:', error.message);
+    return ['DG', 'IIU', 'PCP', 'WS', 'FL'];
   }
 });
 ipcMain.handle('write-file', (event, fileName, fileContent) => {

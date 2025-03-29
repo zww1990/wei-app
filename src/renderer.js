@@ -26,8 +26,8 @@
  * ```
  */
 
-import './index.css';
 import { createApp } from 'vue';
+import './index.css';
 import App from './App.vue';
 
 // 导入Antd组件库
