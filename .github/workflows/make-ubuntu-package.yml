@@ -1,4 +1,4 @@
-name: electron应用程序构建
+name: ubuntu应用程序构建
 on: [push, workflow_dispatch]
 jobs:
   make-ubuntu-package:
@@ -11,4 +11,4 @@ jobs:
       - name: 应用程序打包
         run: npm run make
       - name: 显示构件目录结构
-        run: ls -R ${{ github.workspace }}/out/make
+        run: tree ./out/make
