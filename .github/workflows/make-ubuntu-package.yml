@@ -10,3 +10,5 @@ jobs:
         run: npm install
       - name: 应用程序打包
         run: npm run make
+      - name: 显示构件目录结构
+        run: ls -R ${{ github.workspace }}/out/make
