@@ -5,6 +5,8 @@ jobs:
   make-macos-package:
     runs-on: macos-latest
     steps:
+      - name: 安装 tree 命令
+        run: brew install tree
       - name: 克隆仓库代码
         uses: actions/checkout@v4
       - name: 安装项目依赖库
