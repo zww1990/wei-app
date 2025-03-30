@@ -1,4 +1,5 @@
-name: electron应用程序构建
+name: windows应用程序构建
+run-name: windows应用程序构建
 on: [push, workflow_dispatch]
 jobs:
   make-windows-package:
@@ -11,4 +12,4 @@ jobs:
       - name: 应用程序打包
         run: npm run make
       - name: 显示构件目录结构
-        run: tree out /F
+        run: tree out\make /F
