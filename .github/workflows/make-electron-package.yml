@@ -10,7 +10,8 @@ jobs:
         run: npm install
       - name: 应用程序打包
         run: npm run make
-      - name: 下载构建
-        uses: actions/download-artifact@v4
-        with:
-          path: ./out
+      - run: echo ${{ github.workspace }}
+      # - name: 下载构建
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     path: ./out
