@@ -1,4 +1,5 @@
 name: ubuntu应用程序构建
+run-name: ubuntu应用程序构建
 on: [push, workflow_dispatch]
 jobs:
   make-ubuntu-package:
