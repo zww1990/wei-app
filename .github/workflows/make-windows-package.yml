@@ -1,0 +1,14 @@
+name: electron应用程序构建
+on: [push, workflow_dispatch]
+jobs:
+  make-windows-package:
+    runs-on: windows-latest
+    steps:
+      - name: 克隆仓库代码
+        uses: actions/checkout@v4
+      - name: 安装项目依赖库
+        run: npm install
+      - name: 应用程序打包
+        run: npm run make
+      - name: 显示构件目录结构
+        run: tree out /F
