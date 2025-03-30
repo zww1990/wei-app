@@ -10,8 +10,8 @@ jobs:
         run: npm install
       - name: 应用程序打包
         run: npm run make
-      - uses: actions/download-artifact@v4
+      # - uses: actions/download-artifact@v4
         # with:
         #   name: my-artifact
       - name: 显示下载文件目录结构
-        run: ls -R
+        run: echo "$GITHUB_WORKSPACE"
