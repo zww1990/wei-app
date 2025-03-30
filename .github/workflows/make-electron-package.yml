@@ -1,0 +1,10 @@
+name: electron应用程序构建
+on: [push]
+jobs:
+  Make-Ubuntu-Package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 克隆仓库代码
+        uses: actions/checkout@v4
+      - run: ls
+      
