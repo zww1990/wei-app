@@ -1,6 +1,6 @@
 name: windows应用程序构建
 run-name: windows应用程序构建
-on: [push, workflow_dispatch]
+on: [release, workflow_dispatch]
 jobs:
   make-windows-package:
     runs-on: windows-latest

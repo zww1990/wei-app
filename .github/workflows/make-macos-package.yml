@@ -1,6 +1,6 @@
 name: macos应用程序构建
 run-name: macos应用程序构建
-on: [push, workflow_dispatch]
+on: [release, workflow_dispatch]
 jobs:
   make-macos-package:
     runs-on: macos-latest

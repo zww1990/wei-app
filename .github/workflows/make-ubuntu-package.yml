@@ -1,6 +1,6 @@
 name: ubuntu应用程序构建
 run-name: ubuntu应用程序构建
-on: [push, workflow_dispatch]
+on: [release, workflow_dispatch]
 jobs:
   make-ubuntu-package:
     runs-on: ubuntu-latest
