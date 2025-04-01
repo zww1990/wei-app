@@ -11,9 +11,7 @@ jobs:
         uses: actions/checkout@v4
       - name: 安装项目依赖库
         run: npm install
-      - name: 启动应用程序
-        run: npm start
-      # - name: 应用程序打包
-      #   run: npm run make
-      # - name: 显示构件目录结构
-      #   run: tree ./out/make
+      - name: 应用程序打包
+        run: npm run make
+      - name: 显示构件目录结构
+        run: tree ./out/make
