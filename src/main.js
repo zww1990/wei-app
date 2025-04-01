@@ -99,6 +99,7 @@ app.whenReady().then(() => {
 
   // 设置菜单栏为简体中文
   const appMenu = app.applicationMenu.items;
+  console.log('menu length =', appMenu.length)
   const editSubMenu = appMenu[1].submenu.items;
   const viewSubMenu = appMenu[2].submenu.items;
   const winSubMenu = appMenu[3].submenu.items;
