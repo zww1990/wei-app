@@ -101,12 +101,16 @@ app.whenReady().then(() => {
   const appMenu = app.applicationMenu.items;
   appMenu.forEach(it => {
     console.log(it.label)
-    it.submenu.items.forEach(jt => {
-      console.log('--', jt.label)
-      jt.submenu.items.forEach(kt => {
-        console.log('----', kt.label)
+    if(it.submenu){
+      it.submenu.items.forEach(jt => {
+        console.log('--', jt.label)
+        if(jt.submenu){
+          jt.submenu.items.forEach(kt => {
+            console.log('----', kt.label)
+          })
+        }
       })
-    })
+    }
   })
   const editSubMenu = appMenu[1].submenu.items;
   const viewSubMenu = appMenu[2].submenu.items;
