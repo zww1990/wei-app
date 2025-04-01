@@ -103,6 +103,9 @@ app.whenReady().then(() => {
     console.log(it.label)
     it.submenu.items.forEach(jt => {
       console.log('--', jt.label)
+      jt.submenu.items.forEach(kt => {
+        console.log('----', kt.label)
+      })
     })
   })
   const editSubMenu = appMenu[1].submenu.items;
