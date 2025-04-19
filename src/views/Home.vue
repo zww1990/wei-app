@@ -27,14 +27,26 @@ const latestDataSource = ref([]);
 if (app.isDesktopApp) {
   window.electron.readFile('setting.json').then(content => productSelected.value = content);
 } else {
-  console.warn('浏览器模式不存在 electron 对象。');
   productSelected.value = ['DG', 'IIU', 'PCP', 'WS', 'FL'];
+  const setting = localStorage.getItem('APP_SETTING');
+  if (setting) {
+    try {
+      productSelected.value = JSON.parse(setting);
+    } catch (e) {
+      console.warn('无法将 APP_SETTING 数据转换成 JSON 对象。');
+    }
+  }
   setProductsReleases(productSelected.value);
 }
 
 function saveSetting() {
-  window.electron.writeFile('setting.json', JSON.stringify(productSelected.value, null, 2))
-      .then(() => message.success('设置成功!'));
+  if (app.isDesktopApp) {
+    window.electron.writeFile('setting.json', JSON.stringify(productSelected.value, null, 2))
+        .then(() => message.success('设置成功!'));
+  } else {
+    localStorage.setItem('APP_SETTING', JSON.stringify(productSelected.value));
+    message.success('设置成功!');
+  }
 }
 
 watch(productSelected, (newValue, oldValue) => {
@@ -68,11 +80,16 @@ function removeUselessKey(downloads) {
   return downloads;
 }
 
+function removeUselessText(text) {
+  text = text.replaceAll('\n', '');
+  return text;
+}
+
 function isNew(date) {
   const now = dayjs();
   const other = dayjs(date);
   const day = Math.abs(other.diff(now, 'day'));
-  return day <= 1;
+  return day <= 2;
 }
 
 function downloadJson() {
@@ -121,7 +138,9 @@ window.speechSynthesis.onvoiceschanged = () => {
 
 function translateText() {
   postTranslateText([ whatsnew.value.innerHTML ]).then(res => {
-    whatsnew.value.innerHTML = res.data[0].translations[0].text;
+    let value = res.data[0].translations[0].text;
+    value = value.replaceAll('“', '"').replaceAll('”', '"');
+    whatsnew.value.innerHTML = value;
   });
 }
 
@@ -177,7 +196,7 @@ const whatsnewStyle = reactive({ whiteSpace: 'normal', wordWrap: 'break-word', w
     <a-col :span="15" style="text-align: right">
       <a-space>
         <a-select v-model:value="productSelected" :options="productOptions" style="width: 300px;text-align: left" mode="multiple" placeholder="请选择JetBrains开发者工具" :max-tag-count="1"/>
-        <a-button type="default" @click="saveSetting" v-if="app.isDesktopApp">保存设置</a-button>
+        <a-button type="default" @click="saveSetting">保存设置</a-button>
         <a-button type="default" @click="reload">重新加载</a-button>
         <a-button type="default" @click="downloadJson">下载数据</a-button>
       </a-space>
@@ -196,9 +215,9 @@ const whatsnewStyle = reactive({ whiteSpace: 'normal', wordWrap: 'break-word', w
       </template>
       <template v-else-if="column.dataIndex === 'name'">
         {{record.name}}
-        <a-popover v-if="isNew(record.date)" @openChange="stopSpeakText" :overlayInnerStyle="overlayInnerStyle">
+        <a-popover v-if="!!record.whatsnew && isNew(record.date)" @openChange="stopSpeakText" :overlayInnerStyle="overlayInnerStyle">
           <template #content>
-            <span v-html="record.whatsnew" ref="whatsnew" :style="whatsnewStyle"/>
+            <span v-html="removeUselessText(record.whatsnew)" ref="whatsnew" :style="whatsnewStyle"/>
             <a-divider type="horizontal" style="margin: 5px 0"/>
             <a @click="translateText">翻译成中文</a>
             <a-divider type="vertical" />
@@ -217,12 +236,12 @@ const whatsnewStyle = reactive({ whiteSpace: 'normal', wordWrap: 'break-word', w
           <a-progress :percent="download.progress" :status="download.status" size="small" v-if="download.isDownloading && value.link.endsWith(download.currentFile)"/>
         </li>
       </template>
-      <template #bodyCell="{ column, record }">
+      <template #bodyCell="{ record, index, column }">
         <template v-if="column.dataIndex === 'date'">
           {{record.date}}
-          <a-popover @openChange="stopSpeakText" :overlayInnerStyle="overlayInnerStyle">
+          <a-popover @openChange="stopSpeakText" :overlayInnerStyle="overlayInnerStyle" v-if="!!record.whatsnew">
             <template #content>
-              <span v-html="record.whatsnew" ref="whatsnew" :style="whatsnewStyle"/>
+              <span v-html="removeUselessText(record.whatsnew)" ref="whatsnew" :style="whatsnewStyle"/>
               <a-divider type="horizontal" style="margin: 5px 0"/>
               <a @click="translateText">翻译成中文</a>
               <a-divider type="vertical" />
@@ -230,6 +249,7 @@ const whatsnewStyle = reactive({ whiteSpace: 'normal', wordWrap: 'break-word', w
             </template>
             <InfoCircleTwoTone />
           </a-popover>
+          <a-tag color="error" :bordered="false" v-if="index === 0">new</a-tag>
         </template>
       </template>
     </a-table>
