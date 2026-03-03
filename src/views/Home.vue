@@ -249,7 +249,6 @@ const whatsnewStyle = reactive({ whiteSpace: 'normal', wordWrap: 'break-word', w
             </template>
             <InfoCircleTwoTone />
           </a-popover>
-          <a-tag color="error" :bordered="false" v-if="index === 0">new</a-tag>
         </template>
       </template>
     </a-table>
